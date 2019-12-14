@@ -1,15 +1,15 @@
-#Open Graph image generator 
+# Open Graph image generator 
 
-##Description
+## Description
 
 Generate Open Graph image (og:image) from text content. 
 Image (og:image) is saving in working directory, named like source file or url's domain.
 
-##Install
+## Install
 
 chmod +x ogg
 
-##Needed:
+## Needed:
 
 - pandoc 
 ```shell
@@ -37,7 +37,7 @@ If you got an error like "! LaTeX Error: File `lmodern.sty' not found." just try
 sudo apt-get install lmodern -y
 ```
 
-##Usage:
+## Usage:
 
 ```shell
 ogg [options] [input-file or input-url]
@@ -46,10 +46,10 @@ ogg [options] [input-file or input-url]
 
 Options are:
 
--w [number] - og:image width (968px by default);
--h [number] - og:image height (504px by default);
--b [string] - background color of the og:image ('white' by default);
--p [filename]- use xslt themplate (parser.xsl in working dir if filename not set) for parsing main content part from url;
+- -w [number] - og:image width (968px by default);
+- -h [number] - og:image height (504px by default);
+- -b [string] - background color of the og:image ('white' by default);
+- -p [filename]- use xslt themplate (parser.xsl in working dir if filename not set) for parsing main content part from url;
 
 
 
