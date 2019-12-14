@@ -47,7 +47,6 @@ if [ -n	"$1" ]; then
 		left=$(( $og_width/10 ));
 		top=$(( $og_height/15 ));
 		fontsize=$(( 12+$og_width/72 ));
-		rm moscow.png;
 		linesize=$(( ($og_width * 3)/$fontsize ));		
 		texter=$(echo "$text" | fold -s --width="$linesize"); 
 		convert -size "$og_width"x"$og_height" canvas:"$bg" "$name".png;
@@ -66,7 +65,7 @@ if [ -n	"$1" ]; then
 			if $parser; then
 				xsltproc -o temp --novalid --html 'parser.xsl' temp;
 			fi					
-			pandoc -f html --verbose --ascii --html-q-tags  --normalize -t plain -o $DIRSTACK/$name.temp temp; #$DIRSTACK/$name.pdf; 
+			pandoc -f html --verbose --ascii --html-q-tags  --normalize -t plain -o $DIRSTACK/$name.temp temp; 
 			rm temp;								
 			./ogg -w $og_width -h $og_height $name.temp;
 		else 
