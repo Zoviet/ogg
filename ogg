@@ -63,7 +63,9 @@ if [ -n	"$1" ]; then
 			name=`echo "$content" | sed 's/^.\{6,8\}\(.*\)\.\(.*\)$/\1-\2/' | sed 's/[\/\.]/-/g'`;						
 			wget -q --force-html -O temp $content;
 			if $parser; then
+				pandoc --from html -o temp --to html --verbose --ascii --normalize temp;
 				xsltproc -o temp --novalid --html 'parser.xsl' temp;
+				#echo $(cat temp);
 			fi					
 			pandoc -f html --verbose --ascii --html-q-tags  --normalize -t plain -o $DIRSTACK/$name.temp temp; 
 			rm temp;								
