@@ -11,7 +11,7 @@ themplate=$DIRSTACK/parser.xsl; #default xslt themplate
 bg=white; #default background color of the og:image
 
 content=${!#};
-if [ -n "$content" ]; then 
+if [ -n	"$1" ]; then 
 	while [ -n "$1" ]
 		do
 			case "$1" in
@@ -45,12 +45,13 @@ if [ -n "$content" ]; then
 		fi
 		echo "Convert text to og:image";
 		left=$(( $og_width/10 ));
-		top=$(( $og_height/10 ));
-		fontsize=$(( 10+$og_width/100 ));
-		linesize=$(( "("$og_width-2*$left")"/$fontsize ));		
-		text=$(echo $text | tail -c $linesize);		
+		top=$(( $og_height/15 ));
+		fontsize=$(( 12+$og_width/72 ));
+		rm moscow.png;
+		linesize=$(( ($og_width * 3)/$fontsize ));		
+		texter=$(echo "$text" | fold -s --width="$linesize"); 
 		convert -size "$og_width"x"$og_height" canvas:"$bg" "$name".png;
-		convert "$name".png -gravity North -pointsize "$fontsize" -annotate +"$left"+"$top" "$text" "$name".png;
+		convert "$name".png -gravity NorthWest -pointsize "$fontsize" -annotate +"$left"+"$top" "$texter" "$name".png;
 		if [[ $? == 0 ]]; then 
 			echo 'Success! Your og:image is: '$name'.png';
 		else 
@@ -60,7 +61,7 @@ if [ -n "$content" ]; then
 		urlstatus=$(curl -o /dev/null --silent --head --write-out '%{http_code}' "$content" )		
 		if [ $urlstatus -eq 200 ]; then	
 			echo "Starting the URL convertation...";
-			name=`echo "$content" | sed 's/^.\{6,8\}\(.*\)\.\(.*\)$/\1\2/' | sed 's/\//-/g'`;						
+			name=`echo "$content" | sed 's/^.\{6,8\}\(.*\)\.\(.*\)$/\1-\2/' | sed 's/[\/\.]/-/g'`;						
 			wget -q --force-html -O temp $content;
 			if $parser; then
 				xsltproc -o temp --novalid --html 'parser.xsl' temp;
