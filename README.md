@@ -11,30 +11,18 @@ chmod +x ogg
 
 ## Needed:
 
-- pandoc 
-```shell
-sudo apt install pandoc
-```
-- pdflatex 
-```shell
-sudo apt install texlive-latex-base
-```
-- Tex Live fonts and Text Live xetex
-```shell
-sudo apt texlive-fonts-recommended
-sudo apt texlive-xetex
-```
 - imagemagick 
 ```shell
 sudo apt install imagemagick
 ```
+
+- pandoc (if you wish to generate og:image from url)
+```shell
+sudo apt install pandoc
+```
 - xsltproc (if you wish to use -p option (parse main content from source URL)
 ```shell
 sudo apt install xsltproc)
-```
-If you got an error like "! LaTeX Error: File `lmodern.sty' not found." just try this:
-```shell
-sudo apt-get install lmodern -y
 ```
 
 ## Usage:
