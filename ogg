@@ -47,7 +47,7 @@ if [ -n	"$1" ]; then
 		left=$(( $og_width/10 ));
 		top=$(( $og_height/15 ));
 		fontsize=$(( 12+$og_width/72 ));
-		linesize=$(( ($og_width * 3)/$fontsize ));		
+		linesize=$(( ($og_width -2*$left)*3/$fontsize ));		
 		texter=$(echo "$text" | fold -s --width="$linesize"); 
 		convert -size "$og_width"x"$og_height" canvas:"$bg" "$name".png;
 		convert "$name".png -gravity NorthWest -pointsize "$fontsize" -annotate +"$left"+"$top" "$texter" "$name".png;
@@ -59,15 +59,18 @@ if [ -n	"$1" ]; then
 	else
 		urlstatus=$(curl -o /dev/null --silent --head --write-out '%{http_code}' "$content" )		
 		if [ $urlstatus -eq 200 ]; then	
-			echo "Starting the URL convertation...";
-			name=`echo "$content" | sed 's/^.\{6,8\}\(.*\)\.\(.*\)$/\1-\2/' | sed 's/[\/\.]/-/g'`;						
-			wget -q --force-html -O temp $content;
+			echo "Starting URL convertation";
+			name=`echo "$content" | sed 's/^.\{6,8\}\/\(.*\)\.\(.*\)$/\1-\2/' | sed 's/[\/\.]/-/g'`;						
+			wget --header="Accept: text/html" --user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:21.0) Gecko/20100101 Firefox/21.0" -q --force-html -O temp $content;
 			if $parser; then
+				echo 'Starting XSLT transform';
 				pandoc --from html -o temp --to html --verbose --ascii --normalize temp;
-				xsltproc -o temp --novalid --html 'parser.xsl' temp;
-				#echo $(cat temp);
+				xsltproc -o htmltemp --novalid --html 'parser.xsl' temp;
+				cp -v htmltemp temp;
+				rm htmltemp;  # use htmltemp for testing xslt transform
+				echo 'XSLT transform done!';
 			fi					
-			pandoc -f html --verbose --ascii --html-q-tags  --normalize -t plain -o $DIRSTACK/$name.temp temp; 
+			pandoc -f html --verbose --ascii --normalize -t plain -o $DIRSTACK/$name.temp temp; 
 			rm temp;								
 			./ogg -w $og_width -h $og_height $name.temp;
 		else 

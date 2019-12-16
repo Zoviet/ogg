@@ -7,7 +7,11 @@ Image (og:image) is saving in working directory, named like source file or url's
 
 ## Install
 
+Clone or download and
+
+```shell
 chmod +x ogg
+```
 
 ## Needed:
 
